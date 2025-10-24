@@ -7,29 +7,30 @@
   <style>
     :root{--bg:#f4f7fb;--card:#ffffff;--accent:#4f46e5;--muted:#6b7280}
     *{box-sizing:border-box;font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans CJK TC","Helvetica Neue",Arial}
-    body{margin:0;background:linear-gradient(180deg,var(--bg),#eef2ff);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
-    .container{width:100%;max-width:680px;background:var(--card);border-radius:12px;padding:22px;box-shadow:0 8px 30px rgba(15,23,42,0.08)}
-    h1{margin:0 0 6px;font-size:20px;color:#0f172a}
-    p.lead{margin:0 0 18px;color:var(--muted)}
-    .form .row{display:none;gap:12px;align-items:center;margin-bottom:12px}
-    .form .row.visible{display:flex}
+    body{margin:0;background:linear-gradient(180deg,var(--bg),#eef2ff);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;font-size:18px}
+    .container{width:100%;max-width:680px;background:var(--card);border-radius:12px;padding:28px;box-shadow:0 8px 30px rgba(15,23,42,0.08)}
+    h1{margin:0 0 10px;font-size:24px;color:#0f172a}
+    p.lead{margin:0 0 20px;color:var(--muted);font-size:18px}
+    .form .row{display:none;gap:12px;align-items:center;margin-bottom:16px}
+    .form .row.visible{display:flex;flex-direction:column}
     .question{flex:1}
-    label.q{display:block;font-weight:600;margin-bottom:8px}
-    .options{display:flex;gap:8px}
-    .options button, .actions button{padding:8px 12px;border-radius:8px;border:1px solid #e6e9f2;background:#fff;cursor:pointer}
+    label.q{display:block;font-weight:600;margin-bottom:10px;font-size:20px}
+    .options{display:flex;gap:12px;margin-bottom:10px}
+    .options button, .actions button{padding:10px 16px;border-radius:10px;border:1px solid #e6e9f2;background:#fff;cursor:pointer;font-size:18px}
     .options button.active{background:var(--accent);color:#fff;border-color:transparent}
     .submit{display:none;justify-content:flex-end;margin-top:8px}
     .submit.visible{display:flex}
-    .submit button{background:var(--accent);color:#fff;border:none;padding:10px 14px;border-radius:10px;cursor:pointer}
-    .result, .loading{display:none;align-items:center;justify-content:center;flex-direction:column;padding:18px 12px}
+    .submit button{background:var(--accent);color:#fff;border:none;padding:12px 18px;border-radius:10px;cursor:pointer;font-size:18px}
+    .result, .loading{display:none;align-items:center;justify-content:center;flex-direction:column;padding:20px 12px;font-size:20px}
     .visible-result{display:flex}
-    .spinner{width:64px;height:64px;border-radius:50%;border:6px solid rgba(0,0,0,0.06);border-top-color:var(--accent);animation:spin 1s linear infinite;margin-bottom:14px}
+    .spinner{width:64px;height:64px;border-radius:50%;border:6px solid rgba(0,0,0,0.06);border-top-color:var(--accent);animation:spin 1s linear infinite;margin-bottom:16px}
     @keyframes spin{to{transform:rotate(360deg)}}
-    .result .text{font-size:18px;margin-bottom:10px}
-    .small{color:var(--muted);font-size:13px}
-    .actions{display:flex;gap:8px;margin-top:12px}
+    .result .text{font-size:22px;margin-bottom:12px}
+    .small{color:var(--muted);font-size:16px}
+    .actions{display:flex;gap:12px;margin-top:16px}
     .reset{background:white;color:var(--accent);border:1px solid rgba(79,70,229,0.15)}
-    footer{margin-top:14px;color:var(--muted);font-size:12px;text-align:center}
+    .progress{margin-bottom:12px;font-size:18px;color:var(--accent)}
+    footer{margin-top:18px;color:var(--muted);font-size:14px;text-align:center}
     @media (max-width:520px){.row{flex-direction:column;align-items:flex-start}}
   </style>
 </head>
@@ -39,12 +40,18 @@
     <p class="lead">請依序回答以下 4 個問題，完成後系統會啟動量子分析。</p>
 
     <form id="survey" class="form" onsubmit="return false;">
+      <!-- 進度條 -->
+      <div class="progress" id="progressText">第 1 / 4 題</div>
+
       <div class="row visible" id="step1">
         <div class="question">
           <label class="q">問題 1：你想預測父親還是母親的性別？</label>
           <div class="options" id="q1">
             <button type="button" data-value="father">父親</button>
             <button type="button" data-value="mother">母親</button>
+          </div>
+          <div class="submit">
+            <button type="button" id="confirm1">確認</button>
           </div>
         </div>
       </div>
@@ -56,6 +63,9 @@
             <button type="button" data-value="yes">吃了</button>
             <button type="button" data-value="no">沒吃</button>
           </div>
+          <div class="submit">
+            <button type="button" id="confirm2">確認</button>
+          </div>
         </div>
       </div>
 
@@ -66,6 +76,9 @@
             <button type="button" data-value="yes">吃了</button>
             <button type="button" data-value="no">沒吃</button>
           </div>
+          <div class="submit">
+            <button type="button" id="confirm3">確認</button>
+          </div>
         </div>
       </div>
 
@@ -75,6 +88,9 @@
           <div class="options" id="q4">
             <button type="button" data-value="yes">吃了</button>
             <button type="button" data-value="no">沒吃</button>
+          </div>
+          <div class="submit">
+            <button type="button" id="confirm4">確認</button>
           </div>
         </div>
       </div>
@@ -104,24 +120,38 @@
     const steps = ['step1','step2','step3','step4'];
     let currentStep = 0;
 
-    function setupOptions(containerId, stepIndex){
+    // 選項點擊高亮
+    function setupOptions(containerId){
       const container = document.getElementById(containerId);
       container.querySelectorAll('button').forEach(btn=>{
         btn.addEventListener('click', ()=>{
           container.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
           btn.classList.add('active');
-          // 顯示下一步
-          if(stepIndex < steps.length - 1){
-            document.getElementById(steps[stepIndex]).classList.remove('visible');
-            document.getElementById(steps[stepIndex+1]).classList.add('visible');
-          }else{
-            document.getElementById(steps[stepIndex]).classList.remove('visible');
-            document.getElementById('submitRow').classList.add('visible');
-          }
         });
       });
     }
-    ['q1','q2','q3','q4'].forEach((q,i)=>setupOptions(q,i));
+    ['q1','q2','q3','q4'].forEach(setupOptions);
+
+    // 確認按鈕
+    function setupConfirm(confirmId, stepIndex){
+      document.getElementById(confirmId).addEventListener('click', ()=>{
+        const active = document.getElementById('q'+(stepIndex+1)).querySelector('button.active');
+        if(!active){
+          alert('請先選擇一個答案');
+          return;
+        }
+        // 隱藏當前
+        document.getElementById(steps[stepIndex]).classList.remove('visible');
+        if(stepIndex < steps.length - 1){
+          document.getElementById(steps[stepIndex+1]).classList.add('visible');
+        }else{
+          document.getElementById('submitRow').classList.add('visible');
+        }
+        // 更新進度
+        document.getElementById('progressText').textContent = '第 ' + (stepIndex+2) + ' / 4 題';
+      });
+    }
+    ['confirm1','confirm2','confirm3','confirm4'].forEach((id,i)=>setupConfirm(id,i));
 
     const startBtn = document.getElementById('startBtn');
     const loadingEl = document.getElementById('loading');
@@ -142,9 +172,6 @@
 
     startBtn.addEventListener('click', ()=>{
       const a1 = getAnswer('q1');
-      const a2 = getAnswer('q2');
-      const a3 = getAnswer('q3');
-      const a4 = getAnswer('q4');
 
       document.getElementById('survey').style.display = 'none';
       loadingEl.classList.add('visible-result');
@@ -173,8 +200,11 @@
       resultEl.classList.remove('visible-result');
       loadingEl.classList.remove('visible-result');
       document.getElementById('submitRow').classList.remove('visible');
-      document.getElementById(steps[0]).classList.add('visible');
-      steps.slice(1).forEach(s=>document.getElementById(s).classList.remove('visible'));
+      steps.forEach((s,i)=>{
+        document.getElementById(s).classList.remove('visible');
+      });
+      document.getElementById('step1').classList.add('visible');
+      document.getElementById('progressText').textContent = '第 1 / 4 題';
     });
   </script>
 </body>
