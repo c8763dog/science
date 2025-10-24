@@ -1,217 +1,218 @@
 <!doctype html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>透過科學算法預測父母性別</title>
-    <meta property="og:title" content="透過科學算法預測父母性別" />
-  <meta property="og:description" content="回答四個問題，系統會透過量子分析模擬給出預測結果。" />
-  <meta property="og:image" content="00.png" />
-  <meta property="og:type" content="website" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>透過科學算法預測父母性別</title>
 
-  <style>
-    :root{--bg:#f4f7fb;--card:#ffffff;--accent:#4f46e5;--muted:#6b7280}
-    *{box-sizing:border-box;font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans CJK TC","Helvetica Neue",Arial}
-    body{margin:0;background:linear-gradient(180deg,var(--bg),#eef2ff);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;font-size:18px}
-    .container{width:100%;max-width:680px;background:var(--card);border-radius:12px;padding:28px;box-shadow:0 8px 30px rgba(15,23,42,0.08)}
-    h1{margin:0 0 10px;font-size:24px;color:#0f172a}
-    p.lead{margin:0 0 20px;color:var(--muted);font-size:18px}
-    .progress-wrapper{width:100%;background:#e6e9f2;height:14px;border-radius:7px;margin-bottom:16px}
-    .progress-bar{height:100%;width:0%;background:var(--accent);border-radius:7px;transition:width 0.3s}
-    .form .row{display:none;gap:12px;align-items:center;margin-bottom:16px}
-    .form .row.visible{display:flex;flex-direction:column}
-    .question{flex:1}
-    label.q{display:block;font-weight:600;margin-bottom:10px;font-size:20px}
-    .options{display:flex;gap:12px;margin-bottom:10px}
-    .options button, .actions button{padding:10px 16px;border-radius:10px;border:1px solid #e6e9f2;background:#fff;cursor:pointer;font-size:18px}
-    .options button.active{background:var(--accent);color:#fff;border-color:transparent}
-    .submit{display:flex;justify-content:flex-end;margin-top:8px}
-    .submit button{background:var(--accent);color:#fff;border:none;padding:12px 18px;border-radius:10px;cursor:pointer;font-size:18px}
-    .result, .loading{display:none;align-items:center;justify-content:center;flex-direction:column;padding:20px 12px;font-size:20px}
-    .visible-result{display:flex}
-    .spinner{width:64px;height:64px;border-radius:50%;border:6px solid rgba(0,0,0,0.06);border-top-color:var(--accent);animation:spin 1s linear infinite;margin-bottom:16px}
-    @keyframes spin{to{transform:rotate(360deg)}}
-    .result .text{font-size:22px;margin-bottom:12px}
-    .small{color:var(--muted);font-size:16px}
-    .actions{display:flex;gap:12px;margin-top:16px}
-    .reset{background:white;color:var(--accent);border:1px solid rgba(79,70,229,0.15)}
-    footer{margin-top:18px;color:var(--muted);font-size:14px;text-align:center}
-  </style>
+  <!-- Open Graph / 網頁分享預覽 -->
+  <meta property="og:title" content="透過科學算法預測父母性別" />
+  <meta property="og:description" content="回答四個問題，系統會透過量子分析模擬給出預測結果。" />
+  <meta property="og:image" content="00.png" />
+  <meta property="og:type" content="website" />
+
+  <style>
+    :root{--bg:#f4f7fb;--card:#ffffff;--accent:#4f46e5;--muted:#6b7280}
+    *{box-sizing:border-box;font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans CJK TC","Helvetica Neue",Arial}
+    body{margin:0;background:linear-gradient(180deg,var(--bg),#eef2ff);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;font-size:18px}
+    .container{width:100%;max-width:680px;background:var(--card);border-radius:12px;padding:28px;box-shadow:0 8px 30px rgba(15,23,42,0.08)}
+    h1{margin:0 0 10px;font-size:24px;color:#0f172a}
+    p.lead{margin:0 0 20px;color:var(--muted);font-size:18px}
+    .progress-wrapper{width:100%;background:#e6e9f2;height:14px;border-radius:7px;margin-bottom:16px}
+    .progress-bar{height:100%;width:0%;background:var(--accent);border-radius:7px;transition:width 0.3s}
+    .form .row{display:none;gap:12px;align-items:center;margin-bottom:16px}
+    .form .row.visible{display:flex;flex-direction:column}
+    .question{flex:1}
+    label.q{display:block;font-weight:600;margin-bottom:10px;font-size:20px}
+    .options{display:flex;gap:12px;margin-bottom:10px}
+    .options button, .actions button{padding:10px 16px;border-radius:10px;border:1px solid #e6e9f2;background:#fff;cursor:pointer;font-size:18px}
+    .options button.active{background:var(--accent);color:#fff;border-color:transparent}
+    .submit{display:flex;justify-content:flex-end;margin-top:8px}
+    .submit button{background:var(--accent);color:#fff;border:none;padding:12px 18px;border-radius:10px;cursor:pointer;font-size:18px}
+    .result, .loading{display:none;align-items:center;justify-content:center;flex-direction:column;padding:20px 12px;font-size:20px}
+    .visible-result{display:flex}
+    .spinner{width:64px;height:64px;border-radius:50%;border:6px solid rgba(0,0,0,0.06);border-top-color:var(--accent);animation:spin 1s linear infinite;margin-bottom:16px}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .result .text{font-size:22px;margin-bottom:12px}
+    .small{color:var(--muted);font-size:16px}
+    .actions{display:flex;gap:12px;margin-top:16px}
+    .reset{background:white;color:var(--accent);border:1px solid rgba(79,70,229,0.15)}
+    footer{margin-top:18px;color:var(--muted);font-size:14px;text-align:center}
+  </style>
 </head>
 <body>
-  <div class="container">
-    <h1>透過科學算法預測父母性別</h1>
-    <p class="lead">請依序回答以下 4 個問題，完成後系統會啟動量子分析。</p>
+  <div class="container">
+    <h1>透過科學算法預測父母性別</h1>
+    <p class="lead">請依序回答以下 4 個問題，完成後系統會啟動量子分析。</p>
 
-        <div class="progress-wrapper">
-      <div class="progress-bar" id="progressBar"></div>
-    </div>
+    <!-- 進度條 -->
+    <div class="progress-wrapper">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
 
-    <form id="survey" class="form" onsubmit="return false;">
-      <div class="row visible" id="step1">
-        <div class="question">
-          <label class="q">問題 1：你想預測父親還是母親的性別？</label>
-          <div class="options" data-qid="q1">
-            <button type="button" data-value="father">父親</button>
-            <button type="button" data-value="mother">母親</button>
-          </div>
-          <div class="submit">
-            <button type="button" class="confirm-btn" data-next="step2" data-step-index="0">確認</button>
-          </div>
-        </div>
-      </div>
+    <form id="survey" class="form" onsubmit="return false;">
+      <div class="row visible" id="step1">
+        <div class="question">
+          <label class="q">問題 1：你想預測父親還是母親的性別？</label>
+          <div class="options" id="q1">
+            <button type="button" data-value="father">父親</button>
+            <button type="button" data-value="mother">母親</button>
+          </div>
+          <div class="submit">
+            <button type="button" id="confirm1">確認</button>
+          </div>
+        </div>
+      </div>
 
-      <div class="row" id="step2">
-        <div class="question">
-          <label class="q">問題 2：你吃早餐了嗎？</label>
-          <div class="options" data-qid="q2">
-            <button type="button" data-value="yes">吃了</button>
-            <button type="button" data-value="no">沒吃</button>
-          </div>
-          <div class="submit">
-            <button type="button" class="confirm-btn" data-next="step3" data-step-index="1">確認</button>
-          </div>
-        </div>
-      </div>
+      <div class="row" id="step2">
+        <div class="question">
+          <label class="q">問題 2：你吃早餐了嗎？</label>
+          <div class="options" id="q2">
+            <button type="button" data-value="yes">吃了</button>
+            <button type="button" data-value="no">沒吃</button>
+          </div>
+          <div class="submit">
+            <button type="button" id="confirm2">確認</button>
+          </div>
+        </div>
+      </div>
 
-      <div class="row" id="step3">
-        <div class="question">
-          <label class="q">問題 3：你吃午餐了嗎？</label>
-          <div class="options" data-qid="q3">
-            <button type="button" data-value="yes">吃了</button>
-            <button type="button" data-value="no">沒吃</button>
-          </div>
-          <div class="submit">
-            <button type="button" class="confirm-btn" data-next="step4" data-step-index="2">確認</button>
-          </div>
-        </div>
-      </div>
+      <div class="row" id="step3">
+        <div class="question">
+          <label class="q">問題 3：你吃午餐了嗎？</label>
+          <div class="options" id="q3">
+            <button type="button" data-value="yes">吃了</button>
+            <button type="button" data-value="no">沒吃</button>
+          </div>
+          <div class="submit">
+            <button type="button" id="confirm3">確認</button>
+          </div>
+        </div>
+      </div>
 
-      <div class="row" id="step4">
-        <div class="question">
-          <label class="q">問題 4：你吃晚餐了嗎？</label>
-          <div class="options" data-qid="q4">
-            <button type="button" data-value="yes">吃了</button>
-            <button type="button" data-value="no">沒吃</button>
-          </div>
-          <div class="submit">
-            <button type="button" class="confirm-btn" data-step-index="3">確認</button>
-          </div>
-        </div>
-      </div>
+      <div class="row" id="step4">
+        <div class="question">
+          <label class="q">問題 4：你吃晚餐了嗎？</label>
+          <div class="options" id="q4">
+            <button type="button" data-value="yes">吃了</button>
+            <button type="button" data-value="no">沒吃</button>
+          </div>
+          <div class="submit">
+            <button type="button" id="confirm4">確認</button>
+          </div>
+        </div>
+      </div>
 
-      <div class="submit" id="submitRow">
-        <button id="startBtn" type="button">開始分析</button>
-      </div>
-    </form>
+      <div class="submit" id="submitRow">
+        <button id="startBtn" type="button">開始分析</button>
+      </div>
+    </form>
 
-    <div id="loading" class="loading">
-      <div class="spinner" aria-hidden></div>
-      <div class="small">量子分析中，請稍後...</div>
-    </div>
+    <div id="loading" class="loading">
+      <div class="spinner" aria-hidden></div>
+      <div class="small">量子分析中，請稍後...</div>
+    </div>
 
-    <div id="result" class="result" role="status" aria-live="polite">
-      <div class="text" id="resultText">結果</div>
-      <div class="small" id="subText"></div>
-      <div class="actions">
-        <button id="restartBtn" class="reset">重新開始</button>
-      </div>
-    </div>
+    <div id="result" class="result" role="status" aria-live="polite">
+      <div class="text" id="resultText">結果</div>
+      <div class="small" id="subText"></div>
+      <div class="actions">
+        <button id="restartBtn" class="reset">重新開始</button>
+      </div>
+    </div>
 
-    <footer>注意：此頁面為示範用途，結果僅供娛樂參考。</footer>
-  </div>
+    <footer>注意：此頁面為示範用途，結果僅供娛樂參考。</footer>
+  </div>
 
-  <script>
-    const steps = ['step1', 'step2', 'step3', 'step4'];
-    const progressBar = document.getElementById('progressBar');
-    const surveyForm = document.getElementById('survey');
-    const submitRow = document.getElementById('submitRow');
-    const startBtn = document.getElementById('startBtn');
-    const loadingEl = document.getElementById('loading');
-    const resultEl = document.getElementById('result');
-    const resultText = document.getElementById('resultText');
-    const subText = document.getElementById('subText');
-    const restartBtn = document.getElementById('restartBtn');
+  <script>
+    const steps = ['step1','step2','step3','step4'];
+    const progressBar = document.getElementById('progressBar');
 
-    // 1. 選項點擊高亮
-    document.querySelectorAll('.options').forEach(container => {
-      container.addEventListener('click', (e) => {
-        if (e.target.tagName === 'BUTTON') {
-          container.querySelectorAll('button').forEach(b => b.classList.remove('active'));
-          e.target.classList.add('active');
-        }
-      });
-    });
+    // 選項點擊高亮
+    function setupOptions(containerId){
+      const container = document.getElementById(containerId);
+      container.querySelectorAll('button').forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          container.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+          btn.classList.add('active');
+        });
+      });
+    }
+    ['q1','q2','q3','q4'].forEach(setupOptions);
 
-    // 2. 確認按鈕和步驟切換邏輯
-    document.querySelectorAll('.confirm-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const currentStepIndex = parseInt(e.target.dataset.stepIndex);
-        const currentStepEl = document.getElementById(steps[currentStepIndex]);
-        const optionsContainer = currentStepEl.querySelector('.options');
-        
-        if (!optionsContainer.querySelector('button.active')) {
-          alert('請先選擇一個答案');
-          return;
-        }
+    // 確認按鈕
+    function setupConfirm(confirmId, stepIndex){
+      document.getElementById(confirmId).addEventListener('click', ()=>{
+        const active = document.getElementById('q'+(stepIndex+1)).querySelector('button.active');
+        if(!active){
+          alert('請先選擇一個答案');
+          return;
+        }
+        document.getElementById(steps[stepIndex]).classList.remove('visible');
+        if(stepIndex < steps.length - 1){
+          document.getElementById(steps[stepIndex+1]).classList.add('visible');
+        }else{
+          document.getElementById('submitRow').classList.add('visible');
+        }
+        // 更新進度條
+        let percent = ((stepIndex+1)/steps.length)*100;
+        progressBar.style.width = percent + '%';
+      });
+    }
+    ['confirm1','confirm2','confirm3','confirm4'].forEach((id,i)=>setupConfirm(id,i));
 
-        currentStepEl.classList.remove('visible');
-        
-        if (currentStepIndex < steps.length - 1) {
-          const nextStepId = e.target.dataset.next;
-          document.getElementById(nextStepId).classList.add('visible');
-        } else {
-          submitRow.classList.add('visible');
-        }
+    const startBtn = document.getElementById('startBtn');
+    const loadingEl = document.getElementById('loading');
+    const resultEl = document.getElementById('result');
+    const resultText = document.getElementById('resultText');
+    const subText = document.getElementById('subText');
+    const restartBtn = document.getElementById('restartBtn');
 
-        // 更新進度條
-        let percent = ((currentStepIndex + 1) / steps.length) * 100;
-        progressBar.style.width = percent + '%';
-      });
-    });
+    function getAnswer(qid){
+      const el = document.getElementById(qid);
+      const active = el.querySelector('button.active');
+      return active ? active.getAttribute('data-value') : null;
+    }
 
-    // 取得答案輔助函數
-    function getAnswer(qid) {
-      const el = document.querySelector(`.options[data-qid="${qid}"]`);
-      const active = el ? el.querySelector('button.active') : null;
-      return active ? active.getAttribute('data-value') : null;
-    }
+    function disableInputs(disabled){
+      document.querySelectorAll('.options button, #startBtn').forEach(el=>el.disabled = disabled);
+    }
 
-    // 開始分析按鈕
-    startBtn.addEventListener('click', () => {
-      const a1 = getAnswer('q1');
-      surveyForm.style.display = 'none';
-      loadingEl.classList.add('visible-result');
+    startBtn.addEventListener('click', ()=>{
+      const a1 = getAnswer('q1');
+      document.getElementById('survey').style.display = 'none';
+      loadingEl.classList.add('visible-result');
+      disableInputs(true);
 
-      setTimeout(() => {
-        loadingEl.classList.remove('visible-result');
-        let msg = '';
-        if (a1 === 'father') {
-          msg = '你的父親是男性！';
-        } else if (a1 === 'mother') {
-          msg = '你的母親是女性！';
-        } else {
-          msg = '請選擇要預測的父母。';
-        }
-        resultText.textContent = msg;
-        subText.textContent = '（根據量子演算法模擬結果推論）';
-        resultEl.classList.add('visible-result');
-      }, 3000);
-    });
+      setTimeout(()=>{
+        loadingEl.classList.remove('visible-result');
+        let msg = '';
+        if(a1 === 'father'){
+          msg = '你的父親是男性！';
+        }else if(a1 === 'mother'){
+          msg = '你的母親是女性！';
+        }else{
+          msg = '請選擇要預測的父母。';
+        }
+        resultText.textContent = msg;
+        subText.textContent = '（根據量子演算法模擬結果推論）';
+        resultEl.classList.add('visible-result');
+        disableInputs(false);
+      }, 3000);
+    });
 
-    // 重新開始按鈕
-    restartBtn.addEventListener('click', () => {
-      document.querySelectorAll('.options button.active').forEach(b => b.classList.remove('active'));
-      surveyForm.style.display = '';
-      resultEl.classList.remove('visible-result');
-      loadingEl.classList.remove('visible-result');
-      submitRow.classList.remove('visible');
-      
-      // 重設所有步驟
-      steps.forEach(id => document.getElementById(id).classList.remove('visible'));
-      document.getElementById('step1').classList.add('visible');
-      progressBar.style.width = '0%';
-    });
-  </script>
+    restartBtn.addEventListener('click', ()=>{
+      document.querySelectorAll('.options button').forEach(b=>b.classList.remove('active'));
+      document.getElementById('survey').style.display = '';
+      resultEl.classList.remove('visible-result');
+      loadingEl.classList.remove('visible-result');
+      document.getElementById('submitRow').classList.remove('visible');
+      steps.forEach((s,i)=>{
+        document.getElementById(s).classList.remove('visible');
+      });
+      document.getElementById('step1').classList.add('visible');
+      progressBar.style.width = '0%';
+    });
+  </script>
 </body>
 </html>
