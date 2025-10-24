@@ -6,21 +6,23 @@
   <title>透過科學算法預測父母性別</title>
   <style>
     :root{--bg:#f4f7fb;--card:#ffffff;--accent:#4f46e5;--muted:#6b7280}
-    *{box-sizing:border-box;font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans CJK TC", "Helvetica Neue", Arial}
+    *{box-sizing:border-box;font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans CJK TC","Helvetica Neue",Arial}
     body{margin:0;background:linear-gradient(180deg,var(--bg),#eef2ff);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
     .container{width:100%;max-width:680px;background:var(--card);border-radius:12px;padding:22px;box-shadow:0 8px 30px rgba(15,23,42,0.08)}
     h1{margin:0 0 6px;font-size:20px;color:#0f172a}
     p.lead{margin:0 0 18px;color:var(--muted)}
-    .form .row{display:flex;gap:12px;align-items:center;margin-bottom:12px}
+    .form .row{display:none;gap:12px;align-items:center;margin-bottom:12px}
+    .form .row.visible{display:flex}
     .question{flex:1}
     label.q{display:block;font-weight:600;margin-bottom:8px}
     .options{display:flex;gap:8px}
     .options button, .actions button{padding:8px 12px;border-radius:8px;border:1px solid #e6e9f2;background:#fff;cursor:pointer}
     .options button.active{background:var(--accent);color:#fff;border-color:transparent}
-    .submit{display:flex;justify-content:flex-end;margin-top:8px}
+    .submit{display:none;justify-content:flex-end;margin-top:8px}
+    .submit.visible{display:flex}
     .submit button{background:var(--accent);color:#fff;border:none;padding:10px 14px;border-radius:10px;cursor:pointer}
     .result, .loading{display:none;align-items:center;justify-content:center;flex-direction:column;padding:18px 12px}
-    .visible{display:flex}
+    .visible-result{display:flex}
     .spinner{width:64px;height:64px;border-radius:50%;border:6px solid rgba(0,0,0,0.06);border-top-color:var(--accent);animation:spin 1s linear infinite;margin-bottom:14px}
     @keyframes spin{to{transform:rotate(360deg)}}
     .result .text{font-size:18px;margin-bottom:10px}
@@ -34,10 +36,10 @@
 <body>
   <div class="container">
     <h1>透過科學算法預測父母性別</h1>
-    <p class="lead">請依序回答下面 4 個問題，系統會透過量子分析（模擬）給出預測結果。</p>
+    <p class="lead">請依序回答以下 4 個問題，完成後系統會啟動量子分析。</p>
 
     <form id="survey" class="form" onsubmit="return false;">
-      <div class="row">
+      <div class="row visible" id="step1">
         <div class="question">
           <label class="q">問題 1：你想預測父親還是母親的性別？</label>
           <div class="options" id="q1">
@@ -47,7 +49,7 @@
         </div>
       </div>
 
-      <div class="row">
+      <div class="row" id="step2">
         <div class="question">
           <label class="q">問題 2：你吃早餐了嗎？</label>
           <div class="options" id="q2">
@@ -57,7 +59,7 @@
         </div>
       </div>
 
-      <div class="row">
+      <div class="row" id="step3">
         <div class="question">
           <label class="q">問題 3：你吃午餐了嗎？</label>
           <div class="options" id="q3">
@@ -67,7 +69,7 @@
         </div>
       </div>
 
-      <div class="row">
+      <div class="row" id="step4">
         <div class="question">
           <label class="q">問題 4：你吃晚餐了嗎？</label>
           <div class="options" id="q4">
@@ -77,7 +79,7 @@
         </div>
       </div>
 
-      <div class="submit">
+      <div class="submit" id="submitRow">
         <button id="startBtn" type="button">開始分析</button>
       </div>
     </form>
@@ -89,28 +91,37 @@
 
     <div id="result" class="result" role="status" aria-live="polite">
       <div class="text" id="resultText">結果</div>
-      <div class="small" id="subText">（示例）你的母親是女性！ 你的父親是男性！</div>
+      <div class="small" id="subText"></div>
       <div class="actions">
         <button id="restartBtn" class="reset">重新開始</button>
       </div>
     </div>
 
-    <footer>注意：此頁面為示範用途，結果僅供娛樂參考，不代表真實判斷。</footer>
+    <footer>注意：此頁面為示範用途，結果僅供娛樂參考。</footer>
   </div>
 
   <script>
-    // 簡單互動邏輯
-    function setupOptions(containerId){
+    const steps = ['step1','step2','step3','step4'];
+    let currentStep = 0;
+
+    function setupOptions(containerId, stepIndex){
       const container = document.getElementById(containerId);
-      container.querySelectorAll('button').forEach(btn => {
+      container.querySelectorAll('button').forEach(btn=>{
         btn.addEventListener('click', ()=>{
-          // 切換 active
           container.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
           btn.classList.add('active');
-        })
-      })
+          // 顯示下一步
+          if(stepIndex < steps.length - 1){
+            document.getElementById(steps[stepIndex]).classList.remove('visible');
+            document.getElementById(steps[stepIndex+1]).classList.add('visible');
+          }else{
+            document.getElementById(steps[stepIndex]).classList.remove('visible');
+            document.getElementById('submitRow').classList.add('visible');
+          }
+        });
+      });
     }
-    ['q1','q2','q3','q4'].forEach(setupOptions);
+    ['q1','q2','q3','q4'].forEach((q,i)=>setupOptions(q,i));
 
     const startBtn = document.getElementById('startBtn');
     const loadingEl = document.getElementById('loading');
@@ -130,52 +141,40 @@
     }
 
     startBtn.addEventListener('click', ()=>{
-      // 讀取答案（這裡不強制檢查，若有需要可加驗證）
       const a1 = getAnswer('q1');
       const a2 = getAnswer('q2');
       const a3 = getAnswer('q3');
       const a4 = getAnswer('q4');
 
-      // 顯示 loading 動畫，模擬量子分析，持續 3 秒
       document.getElementById('survey').style.display = 'none';
-      resultEl.classList.remove('visible');
-      loadingEl.classList.add('visible');
+      loadingEl.classList.add('visible-result');
       disableInputs(true);
 
       setTimeout(()=>{
-        loadingEl.classList.remove('visible');
-
-        // 簡單『科學算法』示範：根據使用者回答做很淺的判斷（僅示例）
-        // 這裡為了符合輸出要求，顯示兩個訊息。但你可以自訂邏輯。
-        let motherMsg = '你的母親是女性!';
-        let fatherMsg = '你的父親是男性!';
-
-        // 若使用者只想預測其中一位，可微調顯示內容
+        loadingEl.classList.remove('visible-result');
+        let msg = '';
         if(a1 === 'father'){
-          // 強調父親
-          resultText.textContent = fatherMsg;
-          subText.textContent = motherMsg;
-        } else if(a1 === 'mother'){
-          resultText.textContent = motherMsg;
-          subText.textContent = fatherMsg;
-        } else {
-          // 若未選擇，顯示範例完整結果
-          resultText.textContent = motherMsg + ' ' + fatherMsg;
-          subText.textContent = '（根據輸入的飲食習慣與模擬量子演算法推論）';
+          msg = '你的父親是男性！';
+        }else if(a1 === 'mother'){
+          msg = '你的母親是女性！';
+        }else{
+          msg = '請選擇要預測的父母。';
         }
-
-        resultEl.classList.add('visible');
+        resultText.textContent = msg;
+        subText.textContent = '（根據量子演算法模擬結果推論）';
+        resultEl.classList.add('visible-result');
         disableInputs(false);
       }, 3000);
     });
 
     restartBtn.addEventListener('click', ()=>{
-      // 重設所有回答
       document.querySelectorAll('.options button').forEach(b=>b.classList.remove('active'));
-      resultEl.classList.remove('visible');
       document.getElementById('survey').style.display = '';
-      resultText.textContent = '結果';
-      subText.textContent = '（示例）你的母親是女性！ 你的父親是男性！';
+      resultEl.classList.remove('visible-result');
+      loadingEl.classList.remove('visible-result');
+      document.getElementById('submitRow').classList.remove('visible');
+      document.getElementById(steps[0]).classList.add('visible');
+      steps.slice(1).forEach(s=>document.getElementById(s).classList.remove('visible'));
     });
   </script>
 </body>
